@@ -1,5 +1,6 @@
 ﻿using API.Extensions;
 using API.Middlewares;
+using MassTransit;
 using Serilog;
 
 namespace API
@@ -23,6 +24,15 @@ namespace API
             {
                 loggingBuilder.ClearProviders();
                 loggingBuilder.AddSerilog(dispose: true);
+            });
+
+            services.AddMassTransit(x =>
+            {
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    cfg.Host("rabbitmq://rabbitmq-server");
+                });
+
             });
 
             services
